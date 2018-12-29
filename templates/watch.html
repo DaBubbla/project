@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Watch
+{% endblock %}
+
+{% block main %}
+    <ul>
+        {% for stocks in watch %}
+        <li class="stock-watch">
+            <!--More will be added upon research-->
+            {{ stocks.symbol }}, {{ stocks.name }}, {{ stocks.price }}, {{ stocks.high }}, {{ stocks.low }}
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
