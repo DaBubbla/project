@@ -5,12 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <ul>
-        {% for stocks in watch %}
-        <li class="stock-watch">
-            <!--More will be added upon research-->
-            {{ stocks.symbol }}, {{ stocks.name }}, {{ stocks.price }}, {{ stocks.high }}, {{ stocks.low }}
-        </li>
-        {% endfor %}
-    </ul>
+
+    {% for i in res%}
+        {{ res.companyExchange }}
+    {%endfor%}
+
 {% endblock %}
