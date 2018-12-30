@@ -46,3 +46,10 @@ main img
     /* constrain images on small screens */
     max-width: 100%;
 }
+
+rows
+{
+    color: black;
+    border: black;
+
+}

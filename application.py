@@ -1,9 +1,9 @@
 import os
 import json
-import urllib.parse
 import requests
+import sqlite3 # SQL might handle as well
 
-from cs50 import SQL # To handle the database - hopefully its large enough
+from cs50 import SQL
 from flask import Flask, flash, render_template, request, redirect, session, url_for # For UI / UX
 from flask_session import Session # For UI / UX
 
@@ -255,5 +255,79 @@ def sell():
 @app.route("/watch", methods=["GET","POST"])
 @login_required
 def watch():
-    if request.method == "POST":
+    if request.method == "GET":
         """Monitor table[stock] data for buy/sell indicators"""
+
+#    #    # Iterate through table data
+        try:
+            # Create a connection to the database for querying
+            conn = sqlite3.connect("project.db")
+        except:
+            return apology("Error with db connect")
+
+        # Appoint cursor to exec queries against db
+        cur = conn.cursor()
+
+        # Fetch 1st 60 rows from watch table
+        cur.execute("SELECT * FROM watch ORDER BY date DESC LIMIT 0, 99")
+        # Fetchall will grab all results of a query
+        rows = cur.fetchall()
+
+#    #    # Algorithm time!
+
+        BullFlip = 0
+        BearFlip = 0
+        CountDown = 0
+        Reference = 0
+        Support = 0
+        min = 999.00
+        max = 0
+
+        for col in rows:
+            Open = col[1]
+            High = col[2]
+            Low = col[3]
+            Close = col[4]
+            updown = col[7]
+
+            result = Close - Open
+
+            # if result <= 0: #if negative result
+            #     db.execute("UPDATE watch SET updown=")#Indicating downDay
+            # elif result > 0:
+            #     """Change CSS to indicate downDay"""
+            #     db.execute("UPDATE watch SET updown=0")#Indicating upDay
+
+
+
+
+        return render_template("watch.html", rows=rows)
+
+
+
+
+
+
+
+
+
+
+
+
+    # if bearFlip or bullFlip:
+    #     if bearFlip and close < reference:
+    #         countDown = countDown + 1
+    #         # Light up table slot to buy
+    #         if countDown == 9:
+    #             """change css to blinking buy"""
+    #             # Reference table work
+    #     else:
+    #         if bullFlip and close > reference:
+    #             countDown = countDown + 1
+    #             # light up table slots to sell
+    #             if countDown == 9:
+    #                 """change css to blinking sell"""
+    #                 # Reference table work
+    # else:
+    #     if i > 3 and :
+

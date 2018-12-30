@@ -5,9 +5,34 @@
 {% endblock %}
 
 {% block main %}
+    <table class="table table-striped">
 
-    {% for i in res%}
-        {{ res.companyExchange }}
-    {%endfor%}
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Adj close</th>
+                <th>Volume</th>
+                <th>UpDown</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td class="rows">{{ row[0] }}</td>
+                    <td class="rows">{{ row[1] | usd }}</td>
+                    <td class="rows">{{ row[2] | usd }}</td>
+                    <td class="rows">{{ row[3] | usd }}</td>
+                    <td class="rows">{{ row[4] | usd }}</td>
+                    <td class="rows">{{ row[5] | usd }}</td>
+                    <td class="rows">{{ row[6] }}</td>
+                    <td class="rows">{{ row[7] }}</td>
+                </tr>
+            {% endfor %}
 
+        </tbody>
+    </table>
 {% endblock %}
