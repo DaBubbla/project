@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <table class="table table-striped">
+    <table class="table table-striped table-sm">
 
         <thead>
             <tr>
@@ -21,7 +21,8 @@
         </thead>
         <tbody>
             {% for row in rows %}
-                <tr>
+                {% if row.1 < row.4 %}
+                <tr class="table-success">
                     <td class="rows">{{ row[0] }}</td>
                     <td class="rows">{{ row[1] | usd }}</td>
                     <td class="rows">{{ row[2] | usd }}</td>
@@ -31,6 +32,18 @@
                     <td class="rows">{{ row[6] }}</td>
                     <td class="rows">{{ row[7] }}</td>
                 </tr>
+                {% else %}
+                <tr class='table-danger'>
+                    <td class="rows">{{ row[0] }}</td>
+                    <td class="rows">{{ row[1] | usd }}</td>
+                    <td class="rows">{{ row[2] | usd }}</td>
+                    <td class="rows">{{ row[3] | usd }}</td>
+                    <td class="rows">{{ row[4] | usd }}</td>
+                    <td class="rows">{{ row[5] | usd }}</td>
+                    <td class="rows">{{ row[6] }}</td>
+                    <td class="rows">{{ row[7] }}</td>
+                </tr>
+                {% endif %}
             {% endfor %}
 
         </tbody>

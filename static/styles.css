@@ -47,9 +47,11 @@ main img
     max-width: 100%;
 }
 
-rows
+upper
 {
-    color: black;
-    border: black;
-
+    background-color: green;
+}
+downer
+{
+    background-color: red;
 }
