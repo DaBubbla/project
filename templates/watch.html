@@ -14,34 +14,28 @@
                 <th>High</th>
                 <th>Low</th>
                 <th>Close</th>
-                <th>Adj close</th>
-                <th>Volume</th>
                 <th>UpDown</th>
             </tr>
         </thead>
         <tbody>
-            {% for row in rows %}
-                {% if row.1 < row.4 %}
+            {% for i in rows %}
+                {% if i['u_d'] == "upper" %}
                 <tr class="table-success">
-                    <td class="rows">{{ row[0] }}</td>
-                    <td class="rows">{{ row[1] | usd }}</td>
-                    <td class="rows">{{ row[2] | usd }}</td>
-                    <td class="rows">{{ row[3] | usd }}</td>
-                    <td class="rows">{{ row[4] | usd }}</td>
-                    <td class="rows">{{ row[5] | usd }}</td>
-                    <td class="rows">{{ row[6] }}</td>
-                    <td class="rows">{{ row[7] }}</td>
+                    <td class="rows">{{ i['date'] }}</td>
+                    <td class="rows">{{ i['open'] | usd }}</td>
+                    <td class="rows">{{ i['high'] | usd }}</td>
+                    <td class="rows">{{ i['low'] | usd }}</td>
+                    <td class="rows">{{ i['close'] | usd }}</td>
+                    <td class="rows">{{ i['u_d'] }}</td>
                 </tr>
                 {% else %}
                 <tr class='table-danger'>
-                    <td class="rows">{{ row[0] }}</td>
-                    <td class="rows">{{ row[1] | usd }}</td>
-                    <td class="rows">{{ row[2] | usd }}</td>
-                    <td class="rows">{{ row[3] | usd }}</td>
-                    <td class="rows">{{ row[4] | usd }}</td>
-                    <td class="rows">{{ row[5] | usd }}</td>
-                    <td class="rows">{{ row[6] }}</td>
-                    <td class="rows">{{ row[7] }}</td>
+                    <td class="rows">{{ i['date'] }}</td>
+                    <td class="rows">{{ i['open'] | usd }}</td>
+                    <td class="rows">{{ i['high'] | usd }}</td>
+                    <td class="rows">{{ i['low'] | usd }}</td>
+                    <td class="rows">{{ i['close'] | usd }}</td>
+                    <td class="rows">{{ i['u_d'] }}</td>
                 </tr>
                 {% endif %}
             {% endfor %}

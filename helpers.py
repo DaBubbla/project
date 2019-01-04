@@ -36,6 +36,7 @@ def pyson():
     # Fetchall will grab all results of a query
     b = a.fetchall()
     c = []
+    conn.close()
 
 
     for i in b:
@@ -61,6 +62,140 @@ def pyson():
             c[i]['u_d']='down'
         # print(c)
     return c
+
+def logic():
+    # For analysis block#####
+    days = 50
+    q = pyson()
+    p = []
+    for i in range(days):
+        p.append(
+            q[i]
+            )
+    #########################
+
+    # Evaluate trends in data
+    Min = 0
+    Max = 9999.99
+    BullFlip = 0
+    BearFlip = 0
+    CountDown = 0
+    count = 0
+    Reference = 0
+    Support = 0
+
+    switch = 1
+
+    for i in range(len(p)):
+        if switch == 0:
+            if p[i]['low'] < Min:
+                Min = p[i]['low']
+            if p[i]['high'] > Max:
+                Max = p[i]['high']
+        else:
+            # Initialize min, max, last close on 1st iteration
+            Min = p[i]['low']
+            Max = p[i]['high']
+            Last = p[i]['close']
+            switch = 0 # Turn this off for rest of loop
+        # print(p[i])
+
+    if BearFlip or BullFlip:
+        if BearFlip and p[i]['close'] < Reference:
+            CountDown = CountDown + 1
+            if CountDown == 9:
+                print("Buy", CountDown, p[i]['close'], Reference)
+                # Reference
+                low1 = p[i-8]['low']
+                low2 = p[i-7]['low']
+                low3 = p[i-6]['low']
+                low4 = p[i-5]['low']
+                low5 = p[i-4]['low']
+                low6 = p[i-3]['low']
+                low7 = p[i-2]['low']
+                low8 = p[i-1]['low']
+                low9 = p[i]
+                if low6 < low7:
+                    # discuss logic
+                    low1 = low6
+                else:
+                    low1 = low7
+                    ###############
+                if low8 < low9:
+                    # discuss logic
+                    low2 = low8
+                else:
+                    low2 = low9
+                    ###############
+                if low1 > low2:
+                    print('BuyPERF: ', CountDown, Reference, low1)
+                    print(p[i]['date'],"Strong_Buy", p[i]['close'], Reference, low1)
+                    # Strong_Buy
+            else:
+                print("BuySignal", CountDown, Reference, low1)
+                print(p[i]['date'], "Buy", p[i]['close'], Reference, low1)
+                # Strong_sell
+            CountDown = 0
+            BullFlip = 0
+            BearFlip = 0
+            Reference = 0
+        else:
+            if BullFlip and p[i]['close'] > Reference:
+                print("Trace: ", CountDown, p[i]['close'], Reference)
+                CountDown = CountDown + 1
+                # TD-Sell CountDown Close Reference
+                if CountDown == 9:
+                    if low6 > low7:
+                        low1 = low6
+                    else:
+                        low1 = low7
+                    if low8 > low9:
+                        low2 = low8
+                    else:
+                        low2 = low9
+                    if low1 < low2:
+                        print("SellPERF: ", CountDown, Reference, low1)
+                        print(p[i]['date'], "Strong_sell", p[i]['close'], low1, Reference)
+                    else:
+                        print("SELLSignal", CountDown, low1, Reference)
+                        print(p[i]['date'], "Sell", Reference, low1)
+
+                    CountDown = 0
+                    BullFlip = 0
+                    BearFlip = 0
+                    Reference = 0
+
+            else:
+                CountDown = 0
+                BullFlip = 0
+                BearFlip = 0
+                Reference = 0
+                print("Bust", p[i]['close'], Reference)
+    else:
+        # Reference
+        c1 = p[i-3]['close']
+        c4 = p[i-1]['close']
+
+        if i > 3 and c4 > c1 and p[i]['close'] < c1:
+            # BearFlip
+            print("BearFlip: ", p[i]['date'], p[i]['close'], c1)
+            indicatorBR = p[i]['date'], p[i]['close']
+            BearFlip = 1
+            Reference = c4
+            CountDown = CountDown + 1
+        if i > 3 and c4 < c1 and p[i]['close'] > c1:
+            print("BullFlip", p[i]['date'], p[i]['close'], c1)
+            indicatorBL = p[i]['date'], p[i]['close']
+            BullFlip = 1
+            Reference = c4
+            CountDown = CountDown + 1
+
+    # Change in open / close
+    change_since_open = p[i]['open'] - p[i]['close']
+    chance_since_close = p[i-1]['close'] - p[i]['open']
+    # print(p[i])
+    return(p)
+
 
 # def login_required(f):
 #     """
