@@ -48,6 +48,7 @@ def index():
         # analysis returns Bull / Bear flip
         # logic()
         rows = logic()
+        # print(rows)
 
 
 
