@@ -34,6 +34,7 @@ def pyson():
 
     # Fetchall will grab all results of a query
     b = a.fetchall()
+    b.reverse()
     c = []
     conn.close()
 
@@ -65,10 +66,18 @@ def pyson():
 
 def logic():
     # For analysis block#####
-    days = 50
+    days = 99
     pre = pyson()
+
+
     p = []
-    for i in range(days):
+
+    Bear = 0
+    Bull = 0
+    CountDown = 0
+    Reference = 0
+
+    for i in range(days-1):
         # print(pre[i]['date'])
         p.append({
             'date': pre[i]['date'],
@@ -79,29 +88,17 @@ def logic():
             'signal': pre[i]['u_d']
         })
 
-        Bear = 0
-        Bull = 0
-        CountDown = 0
-        Reference = 0
 
-        print('big if comming')
         if Bear or Bull:
-            print("stepped into big if")
-            if Bear and pre[i]['close'] < Reference:
-                print('2nd big if')
+            if Bear and p[i]['close'] < Reference:
                 # Process a close in a Bear Signal Sequence
                 CountDown = CountDown + 1
-                print("90: ", CountDown)
-                # p[i]['signal'] = "BUY"
+                # print("bear ", CountDown)
                 if CountDown == 9:
-                    low1 = ''
-                    low2 = ''
-
-                    low6 = pre[i-3]
-                    low7 = pre[i-2]
-                    low8 = pre[i-1]
-                    low9 = pre[i]
-
+                    low6 = p[i-3]['close']
+                    low7 = p[i-2]['close']
+                    low8 = p[i-1]['close']
+                    low9 = p[i]['close']
 
                     if low6 < low7:
                         low1 = low6
@@ -112,32 +109,27 @@ def logic():
                         low2 = low8
                     else:
                         low2 = low9
-
+                    print("low1: low2: ", low1, low2)
                     if low1 > low2:
                         p[i]['signal'] = "BUY_PERF"
                     else:
                         p[i]['signal'] = "BUY_SIGNAL"
-                CountDown = 0
-                print("116 count reset")
-                Bull = 0
-                Bear = 0
-                Reference = 0
+                    # Resets counters
+                    CountDown = 0
+                    Bull = 0
+                    Bear = 0
+                    Reference = 0
             else:
-                print("124 else")
                 # No continuing Bear continuation - check for Bull continuation
-                if Bull and pre[i]['close'] > Reference:
+                if Bull and p[i]['close'] > Reference:
                     # Process a close in a Bull signal seq.
                     CountDown = CountDown + 1
-                    print("125:", CountDown)
-                    # p[i]['signal'] = "SELL"
                     if CountDown == 9:
-                        low1 = ''
-                        low2 = ''
+                        low6 = pre[i-3]['close']
+                        low7 = pre[i-2]['close']
+                        low8 = pre[i-1]['close']
+                        low9 = pre[i]['close']
 
-                        low6 = pre[i-3]
-                        low7 = pre[i-2]
-                        low8 = pre[i-1]
-                        low9 = pre[i]
                         if low6 > low7:
                             low1 = low6
                         else:
@@ -154,15 +146,14 @@ def logic():
                         else:
                             # Weak sell signal
                             p[i]['signal'] = 'SELL_SIGNAL'
-                    CountDown = 0
-                    print("150 Count reset")
-                    Bull = 0
-                    Bear = 0
-                    Reference = 0
+                        # Reset counters
+                        CountDown = 0
+                        Bull = 0
+                        Bear = 0
+                        Reference = 0
                 else:
                     # Process a BUST in Bull / Bear Signal sequence
                     CountDown = 0
-                    print("157 count reset")
                     Bull = 0
                     Bear = 0
                     p[i]['signal'] == 'BUST'
@@ -173,18 +164,16 @@ def logic():
             c4 = pre[i-1]['close']
             c1 = pre[i-3]['close']
 
-            if i > 3 and c4 > c1 and pre[i]['close'] < c1:
+            if i > 3 and c4 > c1 and p[i]['close'] < c1:
                 p[i]['signal'] = 'BEAR'
                 Bear = 1
                 Reference = c4
                 CountDown = CountDown + 1
-                print("172:", CountDown)
-            if i > 3 and c4 < c1 and pre[i]['close'] > c1:
+            if i > 3 and c4 < c1 and p[i]['close'] > c1:
                 p[i]['signal'] = "BULL"
                 Bull = 1
                 Reference = c4
                 CountDown = CountDown + 1
-                print("177:", CountDown)
 
     return(p)
 

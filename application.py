@@ -44,13 +44,10 @@ def index():
     if request.method == "GET":
 
 
-        # Returns 50 days worth of stock data
-        # analysis returns Bull / Bear flip
+        # Returns X days worth of stock data
+        # analysis returns Bull / Bear flip and buy / sell signals
         # logic()
         rows = logic()
-        # print(rows)
-
-
-
+        rows.reverse()
 
         return render_template("watch.html", rows=rows)
