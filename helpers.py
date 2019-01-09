@@ -30,7 +30,7 @@ def pyson():
     # Appoint cursor to exec queries against db
     cur = conn.cursor()
     # Fetch 1st 100 rows from watch table
-    a = cur.execute("SELECT * FROM watch ORDER BY date DESC LIMIT 0, 99")
+    a = cur.execute("SELECT * FROM aapl ORDER BY date DESC LIMIT 0, 99")
 
     # Fetchall will grab all results of a query
     b = a.fetchall()
@@ -84,10 +84,14 @@ def logic():
         CountDown = 0
         Reference = 0
 
+        print('big if comming')
         if Bear or Bull:
+            print("stepped into big if")
             if Bear and pre[i]['close'] < Reference:
+                print('2nd big if')
                 # Process a close in a Bear Signal Sequence
                 CountDown = CountDown + 1
+                print("90: ", CountDown)
                 # p[i]['signal'] = "BUY"
                 if CountDown == 9:
                     low1 = ''
@@ -97,6 +101,8 @@ def logic():
                     low7 = pre[i-2]
                     low8 = pre[i-1]
                     low9 = pre[i]
+
+
                     if low6 < low7:
                         low1 = low6
                     else:
@@ -112,14 +118,17 @@ def logic():
                     else:
                         p[i]['signal'] = "BUY_SIGNAL"
                 CountDown = 0
+                print("116 count reset")
                 Bull = 0
                 Bear = 0
                 Reference = 0
             else:
+                print("124 else")
                 # No continuing Bear continuation - check for Bull continuation
                 if Bull and pre[i]['close'] > Reference:
                     # Process a close in a Bull signal seq.
                     CountDown = CountDown + 1
+                    print("125:", CountDown)
                     # p[i]['signal'] = "SELL"
                     if CountDown == 9:
                         low1 = ''
@@ -146,12 +155,14 @@ def logic():
                             # Weak sell signal
                             p[i]['signal'] = 'SELL_SIGNAL'
                     CountDown = 0
+                    print("150 Count reset")
                     Bull = 0
                     Bear = 0
                     Reference = 0
                 else:
                     # Process a BUST in Bull / Bear Signal sequence
                     CountDown = 0
+                    print("157 count reset")
                     Bull = 0
                     Bear = 0
                     p[i]['signal'] == 'BUST'
@@ -167,13 +178,14 @@ def logic():
                 Bear = 1
                 Reference = c4
                 CountDown = CountDown + 1
+                print("172:", CountDown)
             if i > 3 and c4 < c1 and pre[i]['close'] > c1:
                 p[i]['signal'] = "BULL"
                 Bull = 1
                 Reference = c4
                 CountDown = CountDown + 1
+                print("177:", CountDown)
 
-    print(p)
     return(p)
 
 
