@@ -18,81 +18,23 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in rows %}
-                {% if i['signal'] == "BUST" %}
-                <tr class='bg-black'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% elif i['signal'] == "BUY_SIGNAL" %}
-                    <tr class='table-success'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% elif i['signal'] == "BUY_PERF" %}
-                    <tr class='bg-success'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% elif i['signal'] == "SELL_SIGNAL" %}
-                    <tr class='table-success'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% elif i['signal'] == "SELL_PERF" %}
-                    <tr class='bg-danger'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% elif i['signal'] == "BULL" %}
-                    <tr class='bg-warning'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% elif i['signal'] == "BEAR" %}
-                    <tr class='bg-warning'>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
-                {% else %}
-                    <tr>
-                    <td class="rows">{{ i['date'] }}</td>
-                    <td class="rows">{{ i['open'] | usd }}</td>
-                    <td class="rows">{{ i['high'] | usd }}</td>
-                    <td class="rows">{{ i['low'] | usd }}</td>
-                    <td class="rows">{{ i['close'] | usd }}</td>
-                    <td class="rows">{{ i['signal'] }}</td>
-                </tr>
+            {% for row in rows %}
+              <tr id='row'>
 
+                <td id="date">{{ row['date'] }}</td>
+                {% if row.open < row.close %}
+                <td id="open" class='bg-danger'>{{ row['open'] | usd }}</td>
+                <td id="high">{{ row['high'] | usd }}</td>
+                <td id="low">{{ row['low'] | usd }}</td>
+                <td id="close" class='bg-success'>{{ row['close'] | usd }}</td>
+                {% elif row.open > row.close %}
+                <td id="open" class='bg-success'>{{ row['open'] | usd }}</td>
+                <td id="high">{{ row['high'] | usd }}</td>
+                <td id="low">{{ row['low'] | usd }}</td>
+                <td id="close" class='bg-danger'>{{ row['close'] | usd }}</td>
                 {% endif %}
+                <td id="signal">{{ row['signal'] }}</td>
+              </tr>
             {% endfor %}
 
         </tbody>

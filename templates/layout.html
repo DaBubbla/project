@@ -16,13 +16,16 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <!---->
 
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <!-- app's own JavaScript -->
+        <script src="/static/scripts.js"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 
-        <!--favicon issues!!!-->
-        <link rel="icon" type="image/ico" href="/favicon.ico">
-        <!---->
+
 
         <title class="title">CS50-terminal: {% block title %}{% endblock %}</title>
 
@@ -38,7 +41,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 {% if session.user_id %}
                     <ul class="navbar-nav mr-auto mt-2">
-                        <li class="nav-item"><a class="nav-link" href="/quote">Quote</a></li>
+
                         <li class="nav-item"><a class="nav-link" href="/buy">Buy</a></li>
                         <li class="nav-item"><a class="nav-link" href="/sell">Sell</a></li>
                         <li class="nav-item"><a class="nav-link" href="/watch"><i class="fas fa-eye"></i>Watch</a></li>
@@ -48,6 +51,7 @@
                     </ul>
                 {% else %}
                     <ul class="navbar-nav ml-auto mt-2">
+                         <li class="nav-item"><a class="nav-link" href="/quote">Quote</a></li>
                         <li class="nav-item"><a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a></li>
                         <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Log In</a></li>
                     </ul>

@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
 import sqlite3
+import json
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -40,7 +41,6 @@ def pyson():
 
 
     for i in b:
-        # print(i[0]) Got-eem!
         c.append({
             'date': i[0],
             'open': i[1],
@@ -60,7 +60,6 @@ def pyson():
             c[i]['u_d']='upper'
         else:
             c[i]['u_d']='down'
-        # print(c)
     return c
 
 
@@ -78,7 +77,7 @@ def logic():
     Reference = 0
 
     for i in range(days-1):
-        # print(pre[i]['date'])
+
         p.append({
             'date': pre[i]['date'],
             'open': pre[i]['open'],
@@ -93,7 +92,7 @@ def logic():
             if Bear and p[i]['close'] < Reference:
                 # Process a close in a Bear Signal Sequence
                 CountDown = CountDown + 1
-                # print("bear ", CountDown)
+
                 if CountDown == 9:
                     low6 = p[i-3]['close']
                     low7 = p[i-2]['close']
@@ -109,7 +108,7 @@ def logic():
                         low2 = low8
                     else:
                         low2 = low9
-                    print("low1: low2: ", low1, low2)
+
                     if low1 > low2:
                         p[i]['signal'] = "BUY_PERF"
                     else:
@@ -174,8 +173,36 @@ def logic():
                 Bull = 1
                 Reference = c4
                 CountDown = CountDown + 1
-
     return(p)
+
+def lookup(symbol):
+    """Look up quote for symbol."""
+
+    # Contact API
+    try:
+        response = requests.get(f"https://api.iextrading.com/1.0/stock/{urllib.parse.quote_plus(symbol)}/chart/3m")
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    # Parse response
+    try:
+        quote = response.json()
+        return [{
+            "date" : quote['date'],
+            "open" : float(quote['open']),
+            "high" : float(quote['high']),
+            "low"  : float(quote['low']),
+            "close": float(quote['close'])
+        }]
+    except (KeyError, TypeError, ValueError):
+        return None
+
+    print(quote)
+
+def usd(value):
+    """Format value as USD."""
+    return f"${value:,.3f}"
 
 
 # def login_required(f):
@@ -190,31 +217,3 @@ def logic():
 #             return redirect("/login")
 #         return f(*args, **kwargs)
 #     return decorated_function
-
-
-# def lookup(symbol):
-#     """Look up quote for symbol."""
-
-#     # Contact API
-#     try:
-#         response = requests.get(f"https://api.iextrading.com/1.0/stock/{urllib.parse.quote_plus(symbol)}/quote")
-#         response.raise_for_status()
-#     except requests.RequestException:
-#         return None
-
-#     # Parse response
-#     try:
-#         quote = response.json()
-#         return {
-#             "name": quote["companyName"],
-#             "price": float(quote["latestPrice"]),
-#             "symbol": quote["symbol"]
-#         }
-#     except (KeyError, TypeError, ValueError):
-#         return None
-
-
-
-def usd(value):
-    """Format value as USD."""
-    return f"${value:,.3f}"
