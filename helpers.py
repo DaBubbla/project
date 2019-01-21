@@ -175,34 +175,42 @@ def logic():
                 CountDown = CountDown + 1
     return(p)
 
-def lookup(symbol):
-    """Look up quote for symbol."""
-
-    # Contact API
-    try:
-        response = requests.get(f"https://api.iextrading.com/1.0/stock/{urllib.parse.quote_plus(symbol)}/chart/3m")
-        response.raise_for_status()
-    except requests.RequestException:
-        return None
-
-    # Parse response
-    try:
-        quote = response.json()
-        return [{
-            "date" : quote['date'],
-            "open" : float(quote['open']),
-            "high" : float(quote['high']),
-            "low"  : float(quote['low']),
-            "close": float(quote['close'])
-        }]
-    except (KeyError, TypeError, ValueError):
-        return None
-
-    print(quote)
-
 def usd(value):
     """Format value as USD."""
     return f"${value:,.3f}"
+
+
+
+
+
+
+
+# def lookup(symbol):
+#     """Look up quote for symbol."""
+
+#     # Contact API
+#     try:
+#         response = requests.get(f"https://api.iextrading.com/1.0/stock/{urllib.parse.quote_plus(symbol)}/chart/3m")
+#         response.raise_for_status()
+#     except requests.RequestException:
+#         return None
+
+#     # Parse response
+#     try:
+#         quote = response.json()
+#         return [{
+#             "date" : quote['date'],
+#             "open" : float(quote['open']),
+#             "high" : float(quote['high']),
+#             "low"  : float(quote['low']),
+#             "close": float(quote['close'])
+#         }]
+#     except (KeyError, TypeError, ValueError):
+#         return None
+
+#     print(quote)
+
+
 
 
 # def login_required(f):

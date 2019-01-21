@@ -9,7 +9,7 @@ from flask import Flask, flash, render_template, request, session, url_for
 from flask_session import Session
 
 from tempfile import mkdtemp
-from helpers import apology, logic, lookup, pyson, usd# login_required, # Necessary for later application
+from helpers import apology, logic,pyson, usd# login_required ,lookup, # Necessary for later application
 
 
 
@@ -52,17 +52,17 @@ def index():
 
         return render_template("watch.html", rows=rows)
 
-@app.route("/quote", methods=["GET", "POST"])
-# @login_required
-def quote():
-    """Get stock quote. --- TODO """
-    if request.method == "POST":
-        r = lookup(request.form.get("symbol"))
+# @app.route("/quote", methods=["GET", "POST"])
+# # @login_required
+# def quote():
+#     """Get stock quote. --- TODO """
+#     if request.method == "POST":
+#         r = lookup(request.form.get("symbol"))
 
-        if not r:
-            return apology("Invalid symbol")
+#         if not r:
+#             return apology("Invalid symbol")
 
-        return render_template("quoted.html", rows=r)
+#         return render_template("quoted.html", rows=r)
 
-    else:
-        return render_template("quote.html")
+#     else:
+#         return render_template("quote.html")
